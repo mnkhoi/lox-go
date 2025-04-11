@@ -9,7 +9,7 @@ func error(line int, msg string) {
 }
 
 func report(line int, where, msg string) {
-	fmt.Printf("[line %d] Error %s: %s", line, where, msg)
+	fmt.Printf("[line %d] Error %s: %s\n", line, where, msg)
 }
 
 

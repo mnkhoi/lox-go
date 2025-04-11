@@ -1,7 +1,6 @@
 package lox
 
 import (
-	"fmt"
 	"strconv"
 )
 
@@ -13,7 +12,7 @@ type Scanner struct {
 	line    int
 }
 
-func (s Scanner) IsAtEnd() bool {
+func (s *Scanner) IsAtEnd() bool {
 	return s.current >= len(s.Source)
 }
 
@@ -46,20 +45,20 @@ var keywords = map[string]TokenType{
 	"while":  WHILE,
 }
 
-func (s Scanner) ScanTokens() {
-	for s.IsAtEnd() {
+func (s *Scanner) ScanTokens() {
+	for !s.IsAtEnd() {
 		s.start = s.current
 		s.ScanToken()
 	}
 	s.Tokens = append(s.Tokens, *NewToken(EOF, "", nil, s.line))
 }
 
-func (s Scanner) advance() byte {
+func (s *Scanner) advance() byte {
 	out := s.Source[s.current]
 	s.current++
 	return out
 }
-func (s Scanner) ScanToken() {
+func (s *Scanner) ScanToken() {
 	c := s.advance()
 	switch c {
 	case '(':
@@ -145,7 +144,17 @@ func (s *Scanner) identifier() {
 	for s.isAlphaNumeric(s.peek()) {
 		s.advance()
 	}
-	s.addToken(IDENTIFIER)
+
+	val := s.Source[s.start:s.current]
+
+	var ttype TokenType
+	ktype, ok := keywords[val]
+	if ok {
+		ttype = ktype
+	} else {
+		ttype = IDENTIFIER
+	}
+	s.addToken(ttype)
 }
 
 func (s *Scanner) number() {

@@ -1,10 +1,10 @@
-package loxgo
+package main
 
 import (
 	"bufio"
 	"fmt"
+	"lox-go/lox"
 	"os"
-	"strings"
 )
 
 func main() {
@@ -47,11 +47,11 @@ func runPrompt() {
 }
 
 func run(line string) {
-	scanner := scanner.NewScanner(line)
-	tokens := scanner.scanTokens()
+	scanner := lox.NewScanner(line)
+	scanner.ScanTokens()
 
-	for _, token := range tokens {
-		fmt.Println(token.toString())
+	for _, token := range scanner.Tokens {
+		fmt.Println(token)
 	}
 }
 
