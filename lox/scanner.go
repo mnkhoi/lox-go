@@ -1,6 +1,8 @@
 package lox
 
 import (
+	"fmt"
+	"os"
 	"strconv"
 )
 
@@ -127,7 +129,7 @@ func (s *Scanner) ScanToken() {
 		} else if s.isAlpha(c) {
 			s.identifier()
 		} else {
-			error(s.line, "Unexpected character.")
+			s.error(s.line, "Unexpected character.")
 		}
 	}
 }
@@ -171,7 +173,7 @@ func (s *Scanner) number() {
 	}
 	val, err := strconv.ParseFloat(s.Source[s.start:s.current], 32)
 	if err != nil {
-		error(s.line, "Not a float")
+		s.error(s.line, "Not a float")
 		return
 	}
 	s.addTokenLiteral(NUMBER, val)
@@ -190,7 +192,7 @@ func (s *Scanner) string() {
 		s.advance()
 	}
 	if s.IsAtEnd() {
-		error(s.line, "Unterminated string.")
+		s.error(s.line, "Unterminated string.")
 		return
 	}
 	s.advance()
@@ -233,4 +235,12 @@ func (s *Scanner) addToken(ttype TokenType) {
 func (s *Scanner) addTokenLiteral(ttype TokenType, literal any) {
 	text := s.Source[s.start:s.current]
 	s.Tokens = append(s.Tokens, *NewToken(ttype, text, literal, s.line))
+}
+
+func (s *Scanner) error(line int, msg string) {
+	s.report(line, "", msg)
+}
+
+func (s *Scanner) report(line int, where, msg string) {
+	fmt.Fprintf(os.Stderr, "[line %d] Error %s: %s\n", line, where, msg)
 }

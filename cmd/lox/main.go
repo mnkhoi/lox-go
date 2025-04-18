@@ -3,7 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"lox-go/lox"
+	"lox-go/scanner"
 	"os"
 )
 
@@ -47,7 +47,7 @@ func runPrompt() {
 }
 
 func run(line string) {
-	scanner := lox.NewScanner(line)
+	scanner := scanner.NewScanner(line)
 	scanner.ScanTokens()
 
 	for _, token := range scanner.Tokens {
