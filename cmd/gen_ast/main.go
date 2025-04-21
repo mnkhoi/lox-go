@@ -58,6 +58,14 @@ func defineType(f *os.File, basename, classname, fieldlist string) error {
 	fmt.Fprintf(f, "\treturn visitor.Visit%s%s(t)\n", basename, classname)
 	fmt.Fprintf(f, "}\n")
 
+	// fmt.Fprintf(f, "func New%s(", classname)
+	// for field := range strings.SplitSeq(fieldlist, ", ") {
+	// 	name := strings.ToLower(strings.Split(field, " ")[0])
+	// 	ttype := strings.Split(field, " ")[1]
+	// 	fmt.Fprintf(f, "%s %s, ", name, ttype)
+	// }
+	// fmt.Fprintf(f, "\treturn &%s{}")
+
 	return nil
 }
 
