@@ -25,7 +25,7 @@ func (p *Parser) Equality() Expr {
 		right := p.Comparison()
 		expr = Binary{
 			Left:     expr,
-			Operator: operator,
+			Operator: *operator,
 			Right:    right,
 		}
 	}
@@ -161,7 +161,7 @@ func (p *Parser) isAtEnd() bool {
 }
 
 func (p *Parser) peek() Token {
-	return &p.Tokens[p.Current]
+	return p.Tokens[p.Current]
 }
 
 func (p *Parser) previous() *Token {
